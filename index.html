@@ -46,6 +46,7 @@
 
 <script>
   const noBtn = document.getElementById("noBtn");
+  const yesBtn = document.getElementById("yesBtn");
   const question = document.querySelector("h1");
 
   const messages = [
@@ -58,12 +59,28 @@
   ];
 
   let count = 0;
+  let noScale = 1;
+  let yesScale = 1;
 
   function moveButton() {
-    // change the message
+    // change message
     question.textContent = messages[Math.min(count, messages.length - 1)];
     count++;
 
+    // shake the question
+    question.classList.remove("shake");
+    void question.offsetWidth; // restart animation
+    question.classList.add("shake");
+
+    // shrink NO
+    noScale = Math.max(0.4, noScale - 0.1);
+    noBtn.style.transform = `scale(${noScale})`;
+
+    // grow YES
+    yesScale = Math.min(1.6, yesScale + 0.1);
+    yesBtn.style.transform = `scale(${yesScale})`;
+
+    // move NO safely
     const rect = noBtn.getBoundingClientRect();
     const margin = 16;
 
@@ -84,11 +101,12 @@
   noBtn.addEventListener("mouseenter", moveButton);
   noBtn.addEventListener("touchstart", moveButton);
 
-  document.getElementById("yesBtn").addEventListener("click", () => {
+  yesBtn.addEventListener("click", () => {
     question.textContent = "YAYYY 💖🥰";
     document.getElementById("fireworks").style.display = "block";
   });
 </script>
+
 
 
 
